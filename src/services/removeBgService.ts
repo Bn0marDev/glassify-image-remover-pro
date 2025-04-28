@@ -1,5 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export interface RemoveBgResult {
   resultUrl: string;
@@ -8,12 +9,17 @@ export interface RemoveBgResult {
 
 export async function removeBackground(imageFile: File): Promise<RemoveBgResult> {
   try {
-    const formData = new FormData();
-    formData.append('image_file', imageFile);
+    // Convert the image file to base64
+    const base64 = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(imageFile);
+    });
     
-    // Call our Supabase Edge Function instead of directly calling remove.bg API
+    // Call our Supabase Edge Function
     const { data, error } = await supabase.functions.invoke('remove-bg', {
-      body: { image: formData }
+      body: { image: base64 }
     });
     
     if (error) throw error;
@@ -25,6 +31,7 @@ export async function removeBackground(imageFile: File): Promise<RemoveBgResult>
     };
   } catch (error) {
     console.error('Error removing background:', error);
+    toast.error(error instanceof Error ? error.message : 'Failed to process image');
     throw error;
   }
 }
