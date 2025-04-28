@@ -52,7 +52,7 @@ const Index: React.FC = () => {
             أزل خلفية صورتك <span className="text-primary">بسرعة وبسهولة</span>
           </h1>
           <p className="text-xl text-white/70 mb-8">
-            تقنية الذكاء الاصطناعي التي تزيل خلفيات الصور باحترافية وبسرعة فائقة，
+            تقنية الذكاء الاصطناعي التي تزيل خلفيات الصور باحترافية，
             احصل على صور بدون خلفية بنقرة واحدة فقط
           </p>
         </div>
@@ -138,7 +138,9 @@ const Index: React.FC = () => {
       <footer className="mt-auto py-8 glass-panel border-t border-white/10">
         <div className="container mx-auto px-4 text-center">
           <p className="text-white/50 text-sm">
-            © {new Date().getFullYear()} Glassify - جميع الحقوق محفوظة
+            <a href="https://www.tiktok.com/@mousa_0mar" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+              @mousa_0mar
+            </a>
           </p>
         </div>
       </footer>

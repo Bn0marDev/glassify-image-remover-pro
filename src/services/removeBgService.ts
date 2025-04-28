@@ -31,7 +31,7 @@ export async function removeBackground(imageFile: File): Promise<RemoveBgResult>
     };
   } catch (error) {
     console.error('Error removing background:', error);
-    toast.error(error instanceof Error ? error.message : 'Failed to process image');
+    toast.error('حدث خطأ أثناء معالجة الصورة');
     throw error;
   }
 }
