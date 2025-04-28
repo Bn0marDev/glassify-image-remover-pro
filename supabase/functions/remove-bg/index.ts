@@ -19,22 +19,11 @@ serve(async (req) => {
       throw new Error('REMOVE_BG_API_KEY is not set')
     }
 
-    // Get the image data from the request
+    // Get the image file from the request
     const { image } = await req.json()
     if (!image) {
       throw new Error('No image provided')
     }
-
-    const base64Data = image.split(',')[1]; // Remove the data URL prefix
-    const binaryData = atob(base64Data);
-    const bytes = new Uint8Array(binaryData.length);
-    for (let i = 0; i < binaryData.length; i++) {
-      bytes[i] = binaryData.charCodeAt(i);
-    }
-
-    // Create form data with binary image data
-    const formData = new FormData();
-    formData.append('image_file', new Blob([bytes]), 'image.png');
 
     // Call remove.bg API
     const response = await fetch('https://api.remove.bg/v1.0/removebg', {
@@ -42,7 +31,7 @@ serve(async (req) => {
       headers: {
         'X-Api-Key': REMOVE_BG_API_KEY,
       },
-      body: formData,
+      body: image,
     })
 
     if (!response.ok) {
@@ -50,10 +39,8 @@ serve(async (req) => {
       throw new Error(error.errors?.[0]?.title || 'Failed to remove background')
     }
 
-    // Get the result as an array buffer and convert to base64
-    const buffer = await response.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
-    const resultUrl = `data:image/png;base64,${base64}`;
+    const result = await response.blob()
+    const resultUrl = URL.createObjectURL(result)
 
     return new Response(JSON.stringify({ resultUrl }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
