@@ -18,6 +18,11 @@ const Navbar: React.FC = () => {
           <a href="#how-it-works" className="text-sm text-white/70 hover:text-white transition-colors">كيف يعمل</a>
           <a href="#about" className="text-sm text-white/70 hover:text-white transition-colors">عنا</a>
         </div>
+        
+        <div className="flex items-center gap-3">
+          <a href="#" className="text-sm text-primary hover:text-primary/80 transition-colors">تسجيل الدخول</a>
+          <a href="#" className="glass-button text-white px-4 py-2 text-sm rounded-lg">البدء مجاناً</a>
+        </div>
       </div>
     </nav>
   );
